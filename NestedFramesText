@@ -1,0 +1,74 @@
+package Project1;
+
+import java.util.concurrent.TimeUnit;
+
+public class NestedFramesText {
+
+    ChromeDriver driver;
+    public NestedFramesText(){
+    System.out.println("Constructor: TestCases");
+        WebDriverManager.chromedriver().timeout(30).setup();
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    }
+        
+    public void endTest()
+    {
+        System.out.println("End Test: TestCases");
+        driver.close();
+        driver.quit();
+
+    }
+
+    public void testCase01()
+    {
+        public static void main(String[] args) {
+            // Set the path to your ChromeDriver executable
+            System.setProperty("webdriver.chrome.driver", "path_to_chromedriver.exe");
+    
+            // Create a ChromeOptions instance to configure the Chrome browser
+            ChromeOptions options = new ChromeOptions();
+    
+            // Disable the "Chrome is being controlled by automated test software" notification
+            options.addArguments("--disable-blink-features=AutomationControlled");
+    
+            // Initialize the ChromeDriver with the options
+            WebDriver driver = new ChromeDriver(options);
+    
+            // Navigate to the webpage
+            driver.get("https://the-internet.herokuapp.com/nested_frames");
+    
+            // Switch to the top frame
+            driver.switchTo().frame("frame-top");
+    
+            // Switch to the middle frame
+            driver.switchTo().frame("frame-middle");
+    
+            // Find and print the text in the middle frame
+            WebElement middleFrameText = driver.findElement(By.tagName("div"));
+            System.out.println("Text in the middle frame: " + middleFrameText.getText());
+    
+            // Switch back to the top frame
+            driver.switchTo().parentFrame();
+    
+            // Switch to the left frame
+            driver.switchTo().frame("frame-left");
+    
+            // Find and print the text in the left frame
+            WebElement leftFrameText = driver.findElement(By.tagName("body"));
+            System.out.println("Text in the left frame: " + leftFrameText.getText());
+    
+            // Switch back to the top frame
+            driver.switchTo().defaultContent();
+    
+            // Switch to the bottom frame
+            driver.switchTo().frame("frame-bottom");
+    
+            // Find and print the text in the bottom frame
+            WebElement bottomFrameText = driver.findElement(By.tagName("body"));
+            System.out.println("Text in the bottom frame: " + bottomFrameText.getText());
+
+        }
+    }
+}
