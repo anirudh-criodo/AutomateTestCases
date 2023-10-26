@@ -1,0 +1,82 @@
+package Project1;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class IMDbTopMoviesAutomation {
+
+    public IMDbTopMoviesAutomation(){
+    System.out.println("Constructor: TestCases");
+        WebDriverManager.chromedriver().timeout(30).setup();
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    }
+
+    public void endTest()
+    {
+        System.out.println("End Test: TestCases");
+        driver.close();
+        driver.quit();
+
+    }
+  
+  public void testCase01()
+  {
+    public static void main(String[] args) {
+        // Set the path to your ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver", "path_to_chromedriver.exe");
+
+        // Create a ChromeOptions instance to configure the Chrome browser
+        ChromeOptions options = new ChromeOptions();
+
+        // Disable the "Chrome is being controlled by automated test software" notification
+        options.addArguments("--disable-blink-features=AutomationControlled");
+
+        // Initialize the ChromeDriver with the options
+        WebDriver driver = new ChromeDriver(options);
+
+        // Navigate to the IMDb Top 250 Movies page
+        driver.get("https://www.imdb.com/chart/top");
+
+        // Find and print the title of the highest-rated movie
+        WebElement topMovieElement = driver.findElement(By.cssSelector(".titleColumn a"));
+        String topMovieTitle = topMovieElement.getText();
+        System.out.println("The highest-rated movie on IMDb is: " + topMovieTitle);
+
+        // Find and print the number of movies in the table
+        List<WebElement> movieList = driver.findElements(By.cssSelector(".titleColumn"));
+        int movieCount = movieList.size();
+        System.out.println("Number of movies in the table: " + movieCount);
+
+        // Find and print the title of the oldest movie
+        WebElement oldestMovieElement = movieList.get(movieCount - 1).findElement(By.tagName("a"));
+        String oldestMovieTitle = oldestMovieElement.getText();
+        System.out.println("The oldest movie on the list is: " + oldestMovieTitle);
+
+        // Find and print the title of the most recent movie
+        WebElement mostRecentMovieElement = movieList.get(0).findElement(By.tagName("a"));
+        String mostRecentMovieTitle = mostRecentMovieElement.getText();
+        System.out.println("The most recent movie on the list is: " + mostRecentMovieTitle);
+
+        // Find and print the movie with the most user ratings
+        List<WebElement> ratingElements = driver.findElements(By.cssSelector(".imdbRating strong"));
+        double maxRating = 0.0;
+        WebElement mostRatedMovieElement = null;
+
+        for (WebElement element : ratingElements) {
+            String ratingText = element.getText();
+            double rating = Double.parseDouble(ratingText);
+
+            if (rating > maxRating) {
+                maxRating = rating;
+                mostRatedMovieElement = element.findElement(By.xpath("../../.."));
+            }
+        }
+
+        String mostRatedMovieTitle = mostRatedMovieElement.findElement(By.cssSelector(".titleColumn a")).getText();
+        System.out.println("The movie with the most user ratings is: " + mostRatedMovieTitle);
+    }
+}
+
+}
