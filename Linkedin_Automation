@@ -1,0 +1,99 @@
+package Project1;
+
+import java.util.concurrent.TimeUnit;
+
+public class Linkedin_Automation {
+    ChromeDriver driver;
+    public Linkedin_Automation(){
+    System.out.println("Constructor: TestCases");
+        WebDriverManager.chromedriver().timeout(30).setup();
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    }
+
+
+
+
+    public void endTest()
+    {
+        System.out.println("End Test: TestCases");
+        driver.close();
+        driver.quit();
+
+    }
+
+
+
+
+    public void testCase01()
+    {
+
+
+    driver.get("https://www.linkedin.com");
+
+    // Find and click the "Sign in" link
+    WebElement signInLink = driver.findElement(By.linkText("Sign in"));
+    signInLink.click();
+
+    // Find and input your LinkedIn email and password
+    WebElement emailField = driver.findElement(By.id("username"));
+    emailField.sendKeys("your_email@example.com");
+
+    WebElement passwordField = driver.findElement(By.id("password"));
+    passwordField.sendKeys("your_password");
+
+    // Find and click the "Sign in" button
+    WebElement signInButton = driver.findElement(By.cssSelector(".login__form_action_container button"));
+    signInButton.click();
+
+    // Wait for the page to load and the user profile to be accessible
+    WebDriverWait wait = new WebDriverWait(driver, 10);
+    wait.until(ExpectedConditions.presenceOfElementLocated(By.id("nav-settings__dropdown-trigger")));
+
+    // Print the count of 'Who's viewed your profile'
+    String whoViewedProfile = driver.findElement(By.cssSelector(".mn-co-count")).getText();
+    System.out.println("Who's viewed your profile: " + whoViewedProfile);
+
+    // Find and click the 'Me' icon to access the 'View profile' option
+    WebElement meIcon = driver.findElement(By.id("nav-settings__dropdown-trigger"));
+    meIcon.click();
+
+    // Find and click the 'View profile' link
+    WebElement viewProfileLink = driver.findElement(By.linkText("View profile"));
+    viewProfileLink.click();
+
+    // Wait for the profile page to load
+    wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".artdeco-container-card-header-title")));
+
+    // Print the count of 'Impressions of your post'
+    String impressionsOfPost = driver.findElement(By.cssSelector("div[data-control-name='view_wvmp']").getText();
+    System.out.println("Impressions of your post: " + impressionsOfPost);
+
+    // Find and click the 'Start a post' button
+    WebElement startPostButton = driver.findElement(By.cssSelector("button[data-control-name='create_post_button']"));
+    startPostButton.click();
+
+    // Find and input the post text
+    WebElement postTextArea = driver.findElement(By.cssSelector(".mentions-texteditor__contenteditable"));
+    postTextArea.sendKeys("This is a test post using Selenium.");
+
+    // Find and click the 'Post' button
+    WebElement postButton = driver.findElement(By.cssSelector("button[data-control-name='post']"));
+    postButton.click();
+
+    // Wait for the post to be created
+    wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".feed-shared-update-v2__text-view")));
+
+    // Confirm that the post is created
+    String postText = driver.findElement(By.cssSelector(".feed-shared-update-v2__text-view")).getText();
+    if (postText.contains("This is a test post using Selenium.")) {
+        System.out.println("Post successfully created.");
+    } else {
+        System.out.println("Post creation failed.");
+    }
+
+
+    }
+
+}
